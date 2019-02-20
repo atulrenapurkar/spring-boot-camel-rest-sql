@@ -10,10 +10,19 @@ metadata:
   name: ${project.artifactId}
 spec:
   replicas: 1
+  selector:
+    app: ${project.artifactId}
+    provider: fabric8
+    group: ${project.groupId}
+  strategy:
+    rollingParams:
+      timeoutSeconds: 3600
+    type: Rolling
   template:
     spec:
       containers:
-        - 
+        -
+          image: ${project.artifactId}:latest
           resources:
             requests:
               cpu: "0.2"
@@ -44,3 +53,13 @@ spec:
               secretKeyRef:
                 name: mysql
                 key: database-password
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - spring-boot
+        from:
+          kind: ImageStreamTag
+          name: ${project.artifactId}:latest
+      type: ImageChange
