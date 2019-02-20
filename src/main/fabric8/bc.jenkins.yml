@@ -1,0 +1,28 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: ${project.artifactId}
+    provider: fabric8
+    version: ${project.version}
+    group: ${project.groupId}
+  name: ${project.artifactId}
+spec:
+  failedBuildsHistoryLimit: 5
+  runPolicy: Serial
+  source:
+    git:
+      uri: https://github.com/AndriyKalashnykov/spring-boot-camel-rest-sql
+    type: Git
+  strategy:
+    jenkinsPipelineStrategy: {}
+    type: JenkinsPipeline
+  successfulBuildsHistoryLimit: 5
+  triggers:
+    - github:
+        secret: aayuxRcq_5ab6QcsOeKm
+      type: GitHub
+    - generic:
+        secret: sQwH414v9wCpJY7gh8G5
+      type: Generic
+    - type: ConfigChange
