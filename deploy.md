@@ -9,7 +9,14 @@
     ./src/main/resources/quartz/tables_mysql.sql
 
 ### Deploy
-    mvn clean package fabric8:deploy -Dmaven.test.skip=true
+    mvn clean package fabric8:deploy -Dmaven.test.skip=true -Popenshift
+    
+### UnDeploy
+    mvn fabric8:undeploy -Popenshift
+    
+### Run locally
+
+    mvn clean package spring-boot:run -Dmaven.test.skip=true   
 
 ### MySQL
     oc get pods

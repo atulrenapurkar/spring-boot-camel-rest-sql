@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class Quartz2ComponentFactory {
 
-    @Bean(name = "quartz2")
-    public QuartzComponent createJmsComponent() {
-
-        QuartzComponent component = new QuartzComponent();
-        component.setPropertiesFile("quartz.properties");
-
-        return component;
-    }
+//    @Bean(name = "quartz2")
+//    public QuartzComponent createJmsComponent() {
+//
+//        QuartzComponent component = new QuartzComponent();
+//        component.setPropertiesFile("quartz2.properties");
+//
+//        return component;
+//    }
 }
 
