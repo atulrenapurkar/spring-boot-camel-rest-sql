@@ -10,6 +10,11 @@
 
 ### Deploy
     mvn clean package fabric8:deploy -Dmaven.test.skip=true -Popenshift
+
+### URL
+    
+    http://spring-boot-camel-rest-sql-fuse7.6923.rh-us-east-1.openshiftapps.com/camel-rest-sql/books
+    http://spring-boot-camel-rest-sql-fuse7.6923.rh-us-east-1.openshiftapps.com/camel-rest-sql/books/order/1
     
 ### UnDeploy
     mvn fabric8:undeploy -Popenshift
