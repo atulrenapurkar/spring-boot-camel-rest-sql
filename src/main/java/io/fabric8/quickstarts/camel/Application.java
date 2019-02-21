@@ -48,7 +48,7 @@ public class Application extends SpringBootServletInitializer {
                     .component("servlet")
                     .bindingMode(RestBindingMode.json);
 
-            String greetingStr = "Hello user!";
+            String greetingStr = "Hello Satya!";
             rest().get("/hello").id("restHello").to("direct:hello").bindingMode(RestBindingMode.json);
             from("direct:hello").id("helloRoute")
                     .log(LoggingLevel.INFO, greetingStr)
