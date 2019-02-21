@@ -7,7 +7,26 @@ camel:
       enabled: true
       enable-jmx: false
       resolve-property-placeholders: true
-      properties-file: quartz2.properties
+#      properties-file: quartz2.properties
+      properties:
+        org.quartz.scheduler.skipUpdateCheck: "true"
+        org.quartz.scheduler.instanceName: spring-boot-camel-rest-sql
+        org.quartz.scheduler.instanceId: AUTO
+        org.quartz.scheduler.jobFactory.class: org.quartz.simpl.SimpleJobFactory
+        org.quartz.jobStore.class: org.quartz.impl.jdbcjobstore.JobStoreTX
+        org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+        org.quartz.jobStore.useProperties: "false"
+        org.quartz.jobStore.dataSource: myDS
+        org.quartz.jobStore.tablePrefix: QRTZ_
+        org.quartz.jobStore.isClustered: "true"
+        org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool
+        org.quartz.threadPool.threadCount: "10"
+        org.quartz.jobStore.clusterCheckinInterval: "20000"
+        org.quartz.dataSource.myDS.driver: com.mysql.jdbc.Driver
+        org.quartz.dataSource.myDS.URL: jdbc:mysql://${${mysql.service.name}.service.host}:${${mysql.service.name}.service.port}/${mysql.service.database}?useSSL=false
+        org.quartz.dataSource.myDS.user: ${mysql.service.username}
+        org.quartz.dataSource.myDS.password: ${mysql.service.password}
+        org.quartz.dataSource.myDS.maxConnections: "12"
 
     servlet:
       mapping:
@@ -46,5 +65,3 @@ spring:
 quickstart:
   generateOrderPeriod: 10s
   processOrderPeriod: 30s
-
-driverclassname: com.mysql.jdbc.Driver

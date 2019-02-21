@@ -7,8 +7,29 @@ camel:
       enabled: true
       enable-jmx: false
       resolve-property-placeholders: true
-      properties-file: quartz2.properties
-
+#      properties-file: quartz2.properties
+      properties:
+        org.quartz.scheduler.skipUpdateCheck: "true"
+        org.quartz.scheduler.instanceName: spring-boot-camel-rest-sql
+        org.quartz.scheduler.instanceId: AUTO
+        org.quartz.scheduler.jobFactory.class: org.quartz.simpl.SimpleJobFactory
+        org.quartz.jobStore.class: org.quartz.impl.jdbcjobstore.JobStoreTX
+        org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+        org.quartz.jobStore.useProperties: "false"
+        org.quartz.jobStore.dataSource: myDS
+        org.quartz.jobStore.tablePrefix: QRTZ_
+        org.quartz.jobStore.isClustered: "true"
+        org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool
+        org.quartz.threadPool.threadCount: "10"
+        org.quartz.jobStore.clusterCheckinInterval: "20000"
+        org.quartz.dataSource.myDS.driver: org.h2.Driver
+        org.quartz.dataSource.myDS.URL: jdbc:h2:mem:sampledb;MVCC=TRUE;INIT=RUNSCRIPT FROM 'classpath:quartz/tables_h2.sql'
+        org.quartz.dataSource.myDS.user: sa
+        org.quartz.dataSource.myDS.password:
+        org.quartz.dataSource.myDS.maxConnections: "12"
+      job-store-type: jdbc
+      jdbc:
+        initialize-schema: never
     servlet:
       mapping:
         enabled: true
@@ -25,6 +46,9 @@ endpoints:
     enabled: true
 
 spring:
+  quartz:
+    jdbc:
+      initialize-schema: never
   # Spring JDBC configuration
 #  datasource:
 #     Let Spring Boot auto-configure an embedded HSQL database
@@ -32,19 +56,26 @@ spring:
 
 # H2
   h2:
+    jpa:
+      hibernate:
+        ddl-auto: none
+        properties:
+          hibernate:
+            format_sql: true
+      show-sql: true
+
     console:
-      enabled: false
-      path: h2
+      enabled: true
+      path: /h2-console
   datasource:
     # Let Spring Boot auto-configure an embedded HSQL database
-    url: jdbc:mysql://127.0.0.1:3306/sampledb
-    username: root
-    password: 12345
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:h2:mem:sampledb;MVCC=TRUE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    initialize: true
 
 # The application configuration properties
 quickstart:
   generateOrderPeriod: 2s
   processOrderPeriod: 5s
-
-driverclassname: org.h2.Driver
