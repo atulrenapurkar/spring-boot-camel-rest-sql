@@ -1,5 +1,6 @@
 package io.fabric8.quickstarts.camel;
 
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.servlet.CamelHttpTransportServlet;
 import org.apache.camel.model.rest.RestBindingMode;
@@ -46,6 +47,12 @@ public class Application extends SpringBootServletInitializer {
                     .apiContextRouteId("doc-api")
                     .component("servlet")
                     .bindingMode(RestBindingMode.json);
+
+            String greetingStr = "Hello user!";
+            rest().get("/hello").id("restHello").to("direct:hello").bindingMode(RestBindingMode.json);
+            from("direct:hello").id("helloRoute")
+                    .log(LoggingLevel.INFO, greetingStr)
+                    .transform().simple(greetingStr);
 
             rest("/books").description("Books REST service")
                     .get("/").description("The list of all the books")
